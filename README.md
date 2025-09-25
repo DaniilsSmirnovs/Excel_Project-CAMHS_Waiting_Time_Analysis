@@ -12,7 +12,7 @@ There are 14 NHS Health Boards in Scotland:
 
 *NHS National Services Scotland. Service Map [Online]. Place of publication: Network for Inherited Cardiac Conditions Scotland. Available from: [URL](https://www.nn.nhs.scot/niccs/about-us/service-map) [Accessed: 03/09/2025]*
 
-## Questions to Analyze
+## Questions to Analyse
 
 To understand how CAMHS perform in Scotland, I asked the following:
 
@@ -37,7 +37,7 @@ The data for this project were obtained from [Public Health Scotland](https://ww
 - `camhs-adjusted-patients-seen` — monthly data on how long 90% of patients waited from referral to their first treatment
 - `health_board_labels` — names and unique identifier codes for each Health Board
 - `scotland_label` — Scotland-level identifier code
-- `camhs-adjusted-patients-waiting` — monthly data on how long patients were waiting
+- `camhs-adjusted-patients-waiting` — monthly data on how many patients are still waiting for their first treatment
 - `referrals` — monthly referral counts
 
 ## 1️⃣ Do Health Boards meet their 18-week target for CAMHS?
@@ -58,15 +58,17 @@ I used Power Query to load three datasets: `camhs-adjusted-patients-seen`, `heal
 
 ### 🔗🧮 Skill: Power Pivot & DAX
 
-- I created a data model by integrating the `camhs-adjusted-patients-seen` and `health_board_labels tables`, and added a `calendar table`.
+- I created a data model by integrating the `camhs-adjusted-patients-seen` and `health_board_labels` tables, and added a `calendar table`.
 
 ![data_model_stage_1.png](/Resources/Images/data_model_stage_1.png)
 
-- To account for patient volumes, I built a weighted calculation using DAX:
+- I also built a weighted calculation of waiting time (for 90% of patients) using DAX:
 
 ```
 weighted_90th_median = [90th_percentile_weeks_patients_seen] * [total_patient_seen]
 ```
+
+- I will use this calculation to determine the annual average seen time (for 90% of patients), taking into account that different months have different numbers of referrals.
 
 ### 📊🧮 Skill: PivotTable & DAX
 
@@ -79,6 +81,7 @@ Average Seen Time (for 9 in 10 patients) = SUM([weighted_90th_median]) / SUM([to
 ```
 
 - I then added this measure to the values area for analysis.
+- 🚦 I applied conditional formatting to highlight the years and months when the 18-month target was met, as well as when the average waiting time for 90% of patients exceeded one year. 
 
 ### 📊 Analysis
 
@@ -95,3 +98,19 @@ Average Seen Time (for 9 in 10 patients) = SUM([weighted_90th_median]) / SUM([to
 - It’s clear that children and adolescents in Scotland experience unequal access to timely care, with outcomes depending heavily on where they live. Despite the target being in place for over a decade, Scotland as a whole continues to fall short.
 
 ## 2️⃣ What are the trends in Health Boards performance over time?
+
+### 📈 Skill: PivotChart
+
+
+
+### 📊 Analysis
+
+#### 💡 Insights
+
+- The Covid-19 pandemic had a clear impact on access to CAMHS services, with waiting times generally increasing between years 2020 and 2022, before beginning to improve from 2023 onwards.
+- NHS Health Boards varied in how they coped during the pandemic: some, such as Forth Valley, Greater Glasgow and Clyde, and Lanarkshire, saw sharp rises in waiting times, while others, including Grampian, Tayside, and Shetland, were able to maintain performance and meet the 18-week target.
+- Although many Health Boards have improved since the pandemic, some — particularly Lothian and Highland — continue to face long waiting times.
+
+#### 🤔 So What
+
+- The pandemic highlighted differences in preparedness across NHS Health Boards in Scotland to manage disruptions to their services, with some being more prepared than others.
