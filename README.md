@@ -158,5 +158,50 @@ I then added the new dataset to the existing data model:
 
 ### 🔍🔗 Skill: Power Query & Power Pivot
 
-I used Power Query to load the fifth and final dataset – `amhs-adjusted-patients-waiting` and added index and date columns, changed column types, and removed unnecessary fields:
+I used Power Query to load the fifth and final dataset, amhs-adjusted-patients-waiting, and added index and date columns, changed column types, and removed unnecessary fields:
 
+![camhs_adjusted_patients_waiting-query_steps.png](/Resources/Images/camhs_adjusted_patients_waiting-query_steps.png)
+
+I then added the new dataset to the existing data model:
+
+![data_model_stage_3.png](/Resources/Images/data_model_stage_3.png)
+
+### 🧮 Skill: DAX
+
+- I calculated the number of minors waiting longer than recommended in the latest month available using DAX for each waiting category:
+  1. Waiting 19–35 Weeks
+  2. Waiting 36–52 Weeks
+  3. Over 52 Weeks
+  
+```
+Number of Minors Waiting 19-35 Weeks = CALCULATE(
+     MEDIAN('patients_waiting_info'[19-35_weeks]),
+     FILTER(
+        'patients_waiting_info',
+        'patients_waiting_info'[date] = MAX('patients_waiting_info'[date])
+    )
+)
+```
+
+### 📊 Analysis
+
+#### 💡 Insights
+
+- The three Health Boards — Lothian, Lanarkshire, and Highland — appear consistently across all three categories.
+- Lothian has the highest number of minors waiting longer than recommended.
+  
+![minors_waiting_longer_than_recommended.png](/Resources/Images/minors_waiting_longer_than_recommended.png)
+
+#### 🤔 So What
+
+- The findings suggest that targeted support is needed in Lothian Health Board, where the number of minors waiting beyond recommended times is considerably higher than elsewhere.
+
+# Conclusion
+
+This analysis highlights the ongoing challenges faced by Child and Adolescent Mental Health Services (CAMHS) across Scotland. Despite a national target that has been in place for over a decade, access to timely care remains highly variable between NHS Health Boards. Some Boards consistently meet the 18-week target, while others, most notably Lothian and Highland, continue to experience long waiting times.
+
+The impact of external pressures such as the Covid-19 pandemic further emphasised differences in resilience and service delivery across regions. While referral numbers are linked to waiting times, they do not fully explain performance; several Health Boards demonstrate that it is possible to manage high patient volumes while maintaining reasonable waiting times.
+
+The findings also show that a considerable number of children and adolescents are waiting well beyond the recommended thresholds for care, particularly in Lothian, where additional and targeted support appears most needed.
+
+Overall, the results underscore the importance of consistent monitoring and data-driven decision-making in ensuring equitable access to timely mental health support for all young people in Scotland, regardless of where they live.
