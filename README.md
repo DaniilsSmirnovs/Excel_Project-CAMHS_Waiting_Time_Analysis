@@ -37,8 +37,8 @@ The data for this project were obtained from [Public Health Scotland](https://ww
 - `camhs-adjusted-patients-seen` — monthly data on how long 90% of patients waited from referral to their first treatment
 - `health_board_labels` — names and unique identifier codes for each Health Board
 - `scotland_label` — Scotland-level identifier code
-- `camhs-adjusted-patients-waiting` — monthly data on how many patients are still waiting for their first treatment
 - `referrals` — monthly referral counts
+- `camhs-adjusted-patients-waiting` — monthly data on how many patients are still waiting for their first treatment
 
 ## 1️⃣ Do Health Boards meet their 18-week target for CAMHS?
 
@@ -99,9 +99,19 @@ Average Seen Time (for 9 in 10 patients) = SUM([weighted_90th_median]) / SUM([to
 
 ## 2️⃣ What are the trends in Health Boards performance over time?
 
-### 📈 Skill: PivotChart
+### 📈🧮 Skill: PivotChart & DAX
 
+- I created a combo PivotChart to plot the median seen time for a selected Health Board, the median seen time across all of Scotland, and the target seen time.
+  - Lines: Median seen time for a selected Health Board and median seen time across all of Scotland
+  - Area: Target seen time
+- To customise the chart, I added an axis title, a slicer, and a timeline.
 
+- To create a target seen time measure, I wrote the following DAX formula:
+
+```
+Target Seen Time = IF(MAX('patients_seen_info'[date]) >= DATE(2014,12,1), 18,
+                      IF(ISBLANK(MAX('patients_seen_info'[date])), BLANK(), 26))
+```
 
 ### 📊 Analysis
 
@@ -111,6 +121,42 @@ Average Seen Time (for 9 in 10 patients) = SUM([weighted_90th_median]) / SUM([to
 - NHS Health Boards varied in how they coped during the pandemic: some, such as Forth Valley, Greater Glasgow and Clyde, and Lanarkshire, saw sharp rises in waiting times, while others, including Grampian, Tayside, and Shetland, were able to maintain performance and meet the 18-week target.
 - Although many Health Boards have improved since the pandemic, some — particularly Lothian and Highland — continue to face long waiting times.
 
+![HB_performance_over_time.gif](/Resources/Images/HB_performance_over_time.gif)
+
 #### 🤔 So What
 
-- The pandemic highlighted differences in preparedness across NHS Health Boards in Scotland to manage disruptions to their services, with some being more prepared than others.
+- The pandemic highlighted differences in preparedness across NHS Health Boards in Scotland to manage disruptions to their services, with some being more resiliant than others.
+
+## 3️⃣ Do more referrals mean longer waiting time?
+
+### 🔍🔗 Skill: Power Query & Power Pivot
+
+I used Power Query to load the forth dataset – `referrals` and added index and date columns, changed column types, and removed unnecessary fields:
+
+![referrals-query_steps.png](/Resources/Images/referrals-query_steps.png)
+
+I then added the new dataset to the existing data model:
+
+![data_model_stage_2.png](/Resources/Images/data_model_stage_2.png)
+
+### 📊 Analysis
+
+#### 💡 Insights
+
+- There is a positive correlation between the median number of referrals received by each Health Board per month and the median seen time (for 9 in 10 patients).
+- However, there are notable exceptions — in particular, Lothian and Greater Glasgow and Clyde.
+- Lothian has by far the highest median seen time and deviates strongly from the correlation line, even when accounting for its high monthly referral numbers.
+- Greater Glasgow and Clyde, on the other hand, despite having the highest number of referrals, has a median seen time lower than some Health Boards that receive at least five times fewer referrals.
+
+![referrals_and_seen_time.png](/Resources/Images/referrals_and_seen_time.png)
+
+#### 🤔 So What
+
+- The number of referrals and how busy the Health Board is not the only factor that explains the seen time and some health boards are managing extremely well despite having really high volume of patients while others fail short.
+
+## 4️⃣ How many children and adolescents are waiting longer than recommended in the most recent month available?
+
+### 🔍🔗 Skill: Power Query & Power Pivot
+
+I used Power Query to load the fifth and final dataset – `amhs-adjusted-patients-waiting` and added index and date columns, changed column types, and removed unnecessary fields:
+
