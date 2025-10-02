@@ -93,7 +93,7 @@ Average Seen Time (for 9 in 10 patients) = SUM([weighted_90th_median]) / SUM([to
 
 ![18_week_target_dashboard.png](/Resources/Images/18_week_target_dashboard.png)
 
-#### 🤔 So What
+### 🤔 So What
 
 - It’s clear that children and adolescents in Scotland experience unequal access to timely care, with outcomes depending heavily on where they live. Despite the target being in place for over a decade, Scotland as a whole continues to fall short.
 
@@ -123,7 +123,7 @@ Target Seen Time = IF(MAX('patients_seen_info'[date]) >= DATE(2014,12,1), 18,
 
 ![HB_performance_over_time.gif](/Resources/Images/HB_performance_over_time.gif)
 
-#### 🤔 So What
+### 🤔 So What
 
 - The pandemic highlighted differences in preparedness across NHS Health Boards in Scotland to manage disruptions to their services, with some being more resiliant than others.
 
@@ -150,7 +150,7 @@ I then added the new dataset to the existing data model:
 
 ![referrals_and_seen_time.png](/Resources/Images/referrals_and_seen_time.png)
 
-#### 🤔 So What
+### 🤔 So What
 
 - The number of referrals and how busy the Health Board is not the only factor that explains the seen time and some health boards are managing extremely well despite having really high volume of patients while others fail short.
 
@@ -192,7 +192,7 @@ Number of Minors Waiting 19-35 Weeks = CALCULATE(
   
 ![minors_waiting_longer_than_recommended.png](/Resources/Images/minors_waiting_longer_than_recommended.png)
 
-#### 🤔 So What
+### 🤔 So What
 
 - The findings suggest that targeted support is needed in Lothian Health Board, where the number of minors waiting beyond recommended times is considerably higher than elsewhere.
 
